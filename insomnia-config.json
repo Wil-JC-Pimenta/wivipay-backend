@@ -1,0 +1,141 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2024-04-27T12:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2024.2.0",
+  "resources": [
+    {
+      "_id": "env_gateway",
+      "parentId": "wrk_123",
+      "modified": 1714219200000,
+      "created": 1714219200000,
+      "name": "Gateway Environment",
+      "data": {
+        "base_url": "http://localhost:8080/api",
+        "keycloak_url": "http://localhost:8081/auth",
+        "realm": "gateway",
+        "client_id": "gateway-client",
+        "client_secret": "your_client_secret"
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url", "keycloak_url", "realm", "client_id", "client_secret"]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1
+    },
+    {
+      "_id": "req_auth_token",
+      "parentId": "fld_123",
+      "modified": 1714219200000,
+      "created": 1714219200000,
+      "name": "Get Auth Token",
+      "url": "{{ _.keycloak_url }}/realms/{{ _.realm }}/protocol/openid-connect/token",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/x-www-form-urlencoded",
+        "params": [
+          {
+            "name": "grant_type",
+            "value": "client_credentials"
+          },
+          {
+            "name": "client_id",
+            "value": "{{ _.client_id }}"
+          },
+          {
+            "name": "client_secret",
+            "value": "{{ _.client_secret }}"
+          }
+        ]
+      },
+      "description": "Obter token de acesso usando client credentials",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/x-www-form-urlencoded"
+        }
+      ]
+    },
+    {
+      "_id": "req_authorize_payment",
+      "parentId": "fld_123",
+      "modified": 1714219200000,
+      "created": 1714219200000,
+      "name": "Authorize Payment",
+      "url": "{{ _.base_url }}/payments/authorize",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"amount\": 100.00,\n  \"currency\": \"BRL\",\n  \"paymentMethod\": \"credit_card\",\n  \"provider\": \"cielo\",\n  \"card\": {\n    \"number\": \"4111111111111111\",\n    \"holderName\": \"Test User\",\n    \"expirationDate\": \"12/25\",\n    \"securityCode\": \"123\"\n  }\n}"
+      },
+      "description": "Autorizar um pagamento",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_capture_payment",
+      "parentId": "fld_123",
+      "modified": 1714219200000,
+      "created": 1714219200000,
+      "name": "Capture Payment",
+      "url": "{{ _.base_url }}/payments/{{ _.transaction_id }}/capture",
+      "method": "POST",
+      "description": "Capturar um pagamento autorizado",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_refund_payment",
+      "parentId": "fld_123",
+      "modified": 1714219200000,
+      "created": 1714219200000,
+      "name": "Refund Payment",
+      "url": "{{ _.base_url }}/payments/{{ _.transaction_id }}/refund",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"amount\": 100.00\n}"
+      },
+      "description": "Estornar um pagamento",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_get_payment",
+      "parentId": "fld_123",
+      "modified": 1714219200000,
+      "created": 1714219200000,
+      "name": "Get Payment",
+      "url": "{{ _.base_url }}/payments/{{ _.transaction_id }}",
+      "method": "GET",
+      "description": "Consultar um pagamento",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ]
+    }
+  ]
+}

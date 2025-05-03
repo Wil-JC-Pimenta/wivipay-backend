@@ -1,0 +1,78 @@
+{
+  "realm": "gateway",
+  "enabled": true,
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin"
+        }
+      ],
+      "realmRoles": ["admin"],
+      "clientRoles": {
+        "gateway-client": ["payments:write", "payments:read"]
+      }
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Administrator role"
+      }
+    ],
+    "client": {
+      "gateway-client": [
+        {
+          "name": "payments:write",
+          "description": "Permission to create and manage payments"
+        },
+        {
+          "name": "payments:read",
+          "description": "Permission to read payment information"
+        }
+      ]
+    }
+  },
+  "clients": [
+    {
+      "clientId": "gateway-client",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "gateway-secret",
+      "redirectUris": ["http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:3000"],
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "authorizationServicesEnabled": true,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "payments:write",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      }
+    },
+    {
+      "name": "payments:read",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      }
+    }
+  ]
+}
