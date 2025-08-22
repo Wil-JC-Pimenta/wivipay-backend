@@ -36,6 +36,15 @@ public class PaymentResponse {
     @Schema(description = "Método de pagamento", example = "credit_card")
     private String paymentMethod;
     
+    @Schema(description = "Descrição do pagamento", example = "Pagamento de teste")
+    private String description;
+    
+    @Schema(description = "ID do cliente", example = "12345")
+    private String customerId;
+    
+    @Schema(description = "Metadados adicionais", example = "{\"orderId\": \"123\"}")
+    private String metadata;
+    
     @Schema(description = "Mensagem de erro, se houver", example = "Cartão recusado")
     private String errorMessage;
     

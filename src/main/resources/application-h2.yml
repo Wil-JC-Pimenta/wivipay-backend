@@ -1,0 +1,82 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/gateway
+          jwk-set-uri: http://localhost:8080/auth/realms/gateway/protocol/openid-connect/certs
+
+server:
+  port: 8082
+  servlet:
+    context-path: /api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+
+# Configurações dos provedores de pagamento
+cielo:
+  api:
+    url: https://apisandbox.cieloecommerce.cielo.com.br
+  merchant:
+    id: your_merchant_id
+    key: your_merchant_key
+  environment: SANDBOX
+
+paypal:
+  api:
+    url: https://api-m.sandbox.paypal.com
+  client:
+    id: your_client_id
+    secret: your_client_secret
+
+stripe:
+  api:
+    key: your_stripe_api_key
+    url: https://api.stripe.com
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v3/api-docs
+  show-actuator: true
+  packages-to-scan: com.wipay.gateway.controller
+  paths-to-match: /**

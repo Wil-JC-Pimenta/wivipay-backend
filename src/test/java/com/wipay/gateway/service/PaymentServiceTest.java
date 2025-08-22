@@ -8,7 +8,6 @@ import com.wipay.gateway.repository.PaymentTransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -19,6 +18,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +30,12 @@ class PaymentServiceTest {
     @Mock
     private PaymentProvider stripeProvider;
 
-    @InjectMocks
+    @Mock
+    private TransactionLogService transactionLogService;
+
+    @Mock
+    private BusinessValidationService businessValidationService;
+
     private PaymentService paymentService;
 
     private PaymentRequest request;
@@ -66,8 +71,12 @@ class PaymentServiceTest {
         transaction.setStatus(PaymentTransaction.PaymentStatus.AUTHORIZED);
         transaction.setPaymentMethod("card_token");
 
-        when(stripeProvider.supports("stripe")).thenReturn(true);
-        paymentService = new PaymentService(List.of(stripeProvider), repository);
+        // Configurar mocks de forma mais flexível
+        lenient().when(stripeProvider.supports(anyString())).thenReturn(false);
+        lenient().when(stripeProvider.supports("stripe")).thenReturn(true);
+        lenient().doNothing().when(businessValidationService).validatePaymentRequest(any(PaymentRequest.class));
+        
+        paymentService = new PaymentService(List.of(stripeProvider), repository, transactionLogService, businessValidationService);
     }
 
     @Test
@@ -128,4 +137,4 @@ class PaymentServiceTest {
 
         assertEquals("Transação não encontrada", exception.getMessage());
     }
-} 
+}

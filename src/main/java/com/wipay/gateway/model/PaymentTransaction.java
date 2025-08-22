@@ -43,6 +43,15 @@ public class PaymentTransaction {
     @Column(columnDefinition = "TEXT")
     private String errorMessage;
     
+    @Column(length = 255)
+    private String description;
+    
+    @Column(name = "customer_id", length = 100)
+    private String customerId;
+    
+    @Column(columnDefinition = "TEXT")
+    private String metadata;
+    
     @CreationTimestamp
     private LocalDateTime createdAt;
     

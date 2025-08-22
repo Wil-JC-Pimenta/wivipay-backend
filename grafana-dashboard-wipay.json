@@ -1,0 +1,289 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "WiPay Gateway Dashboard",
+    "tags": ["wipay", "gateway", "payments", "monitoring"],
+    "style": "dark",
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Status dos Serviços",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job=\"wipay-gateway\"}",
+            "legendFormat": "WiPay Gateway"
+          },
+          {
+            "expr": "up{job=\"postgres\"}",
+            "legendFormat": "PostgreSQL"
+          },
+          {
+            "expr": "up{job=\"rabbitmq\"}",
+            "legendFormat": "RabbitMQ"
+          },
+          {
+            "expr": "up{job=\"keycloak\"}",
+            "legendFormat": "Keycloak"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {"color": "red", "value": 0},
+                {"color": "green", "value": 1}
+              ]
+            }
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Taxa de Pagamentos por Minuto",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(wipay_payments_authorizations_total[1m])",
+            "legendFormat": "Autorizações"
+          },
+          {
+            "expr": "rate(wipay_payments_captures_total[1m])",
+            "legendFormat": "Capturas"
+          },
+          {
+            "expr": "rate(wipay_payments_refunds_total[1m])",
+            "legendFormat": "Reembolsos"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Tempo de Resposta P95",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(wipay_payments_processing_time_seconds_bucket[5m]))",
+            "legendFormat": "Pagamentos"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(wipay_customers_operation_time_seconds_bucket[5m]))",
+            "legendFormat": "Clientes"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(wipay_credit_cards_operation_time_seconds_bucket[5m]))",
+            "legendFormat": "Cartões"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Segundos",
+            "unit": "s"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+      },
+      {
+        "id": 4,
+        "title": "Taxa de Erro",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(wipay_errors_total[5m])",
+            "legendFormat": "Erros"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Erros/segundo",
+            "unit": "reqps"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "Total de Clientes",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "wipay_customers_total",
+            "legendFormat": "Clientes"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "short"
+          }
+        },
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 16}
+      },
+      {
+        "id": 6,
+        "title": "Total de Cartões",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "wipay_credit_cards_total",
+            "legendFormat": "Cartões"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "short"
+          }
+        },
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 16}
+      },
+      {
+        "id": 7,
+        "title": "Total de Transações",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "wipay_transactions_total",
+            "legendFormat": "Transações"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "short"
+          }
+        },
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 16}
+      },
+      {
+        "id": 8,
+        "title": "Logs de Transação por Minuto",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(wipay_transaction_logs_created_total[1m])",
+            "legendFormat": "Logs"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Logs/segundo",
+            "unit": "reqps"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 18, "y": 16}
+      },
+      {
+        "id": 9,
+        "title": "Volume de Pagamentos por Provedor",
+        "type": "piechart",
+        "targets": [
+          {
+            "expr": "sum by (provider) (wipay_payments_amount_total)",
+            "legendFormat": "{{provider}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20}
+      },
+      {
+        "id": 10,
+        "title": "Taxa de Sucesso de Pagamentos",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "rate(wipay_payments_authorizations_total[5m]) / (rate(wipay_payments_authorizations_total[5m]) + rate(wipay_payments_failures_total[5m])) * 100",
+            "legendFormat": "Taxa de Sucesso"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {"color": "red", "value": 0},
+                {"color": "yellow", "value": 80},
+                {"color": "green", "value": 95}
+              ]
+            },
+            "unit": "percent"
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20}
+      },
+      {
+        "id": 11,
+        "title": "Crescimento de Clientes",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(wipay_customers_creations_total[1h])",
+            "legendFormat": "Novos Clientes/hora"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Clientes/hora",
+            "unit": "reqps"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 28}
+      },
+      {
+        "id": 12,
+        "title": "Uso de Recursos do Sistema",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "100 - (avg by(instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "legendFormat": "CPU %"
+          },
+          {
+            "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+            "legendFormat": "Memória %"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Percentual",
+            "unit": "percent"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 28}
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "30s",
+    "schemaVersion": 27,
+    "version": 1,
+    "links": [],
+    "templating": {
+      "list": [
+        {
+          "name": "instance",
+          "type": "query",
+          "query": "label_values(up, instance)",
+          "refresh": 2,
+          "includeAll": true,
+          "multi": false
+        }
+      ]
+    }
+  }
+}

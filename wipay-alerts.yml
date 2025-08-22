@@ -1,0 +1,215 @@
+groups:
+  - name: wipay-gateway
+    rules:
+      # Alertas de disponibilidade
+      - alert: WiPayGatewayDown
+        expr: up{job="wipay-gateway"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: wipay-gateway
+        annotations:
+          summary: "WiPay Gateway está fora do ar"
+          description: "O serviço WiPay Gateway não está respondendo há mais de 1 minuto"
+
+      # Alertas de performance
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(wipay_payments_processing_time_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Tempo de resposta alto detectado"
+          description: "O tempo de resposta P95 está acima de 2 segundos"
+
+      - alert: VeryHighResponseTime
+        expr: histogram_quantile(0.95, rate(wipay_payments_processing_time_seconds_bucket[5m])) > 5
+        for: 2m
+        labels:
+          severity: critical
+          service: wipay-gateway
+        annotations:
+          summary: "Tempo de resposta muito alto"
+          description: "O tempo de resposta P95 está acima de 5 segundos"
+
+      # Alertas de taxa de erro
+      - alert: HighErrorRate
+        expr: rate(wipay_errors_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Taxa de erro alta detectada"
+          description: "A taxa de erro está acima de 10% nos últimos 5 minutos"
+
+      - alert: CriticalErrorRate
+        expr: rate(wipay_errors_total[5m]) > 0.3
+        for: 2m
+        labels:
+          severity: critical
+          service: wipay-gateway
+        annotations:
+          summary: "Taxa de erro crítica"
+          description: "A taxa de erro está acima de 30% nos últimos 2 minutos"
+
+      # Alertas de pagamentos
+      - alert: PaymentFailureRate
+        expr: rate(wipay_payments_failures_total[5m]) / (rate(wipay_payments_authorizations_total[5m]) + rate(wipay_payments_failures_total[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Taxa de falha de pagamento alta"
+          description: "A taxa de falha de pagamentos está acima de 5%"
+
+      - alert: NoPayments
+        expr: rate(wipay_payments_authorizations_total[10m]) == 0
+        for: 15m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Nenhum pagamento processado"
+          description: "Não houve pagamentos processados nos últimos 10 minutos"
+
+      # Alertas de clientes
+      - alert: CustomerCreationFailure
+        expr: rate(wipay_customers_creations_total[5m]) == 0 and rate(wipay_customers_updates_total[5m]) > 0
+        for: 10m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Falha na criação de clientes"
+          description: "Não há criação de clientes, mas há atualizações"
+
+      # Alertas de cartões
+      - alert: CreditCardCreationFailure
+        expr: rate(wipay_credit_cards_creations_total[5m]) == 0 and rate(wipay_credit_cards_updates_total[5m]) > 0
+        for: 10m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Falha na criação de cartões"
+          description: "Não há criação de cartões, mas há atualizações"
+
+      # Alertas de logs
+      - alert: NoTransactionLogs
+        expr: rate(wipay_transaction_logs_created_total[5m]) == 0
+        for: 10m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Nenhum log de transação criado"
+          description: "Não há logs de transação sendo criados"
+
+      # Alertas de banco de dados
+      - alert: DatabaseConnectionIssues
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: postgres
+        annotations:
+          summary: "Problemas de conexão com banco de dados"
+          description: "Não é possível conectar ao banco de dados PostgreSQL"
+
+      # Alertas de RabbitMQ
+      - alert: RabbitMQIssues
+        expr: up{job="rabbitmq"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: rabbitmq
+        annotations:
+          summary: "Problemas com RabbitMQ"
+          description: "O serviço RabbitMQ não está respondendo"
+
+      # Alertas de Keycloak
+      - alert: KeycloakIssues
+        expr: up{job="keycloak"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: keycloak
+        annotations:
+          summary: "Problemas com Keycloak"
+          description: "O serviço Keycloak não está respondendo"
+
+      # Alertas de recursos do sistema
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Uso de memória alto"
+          description: "O uso de memória está acima de 90%"
+
+      - alert: HighDiskUsage
+        expr: (node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Uso de disco alto"
+          description: "O uso de disco está acima de 90%"
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Uso de CPU alto"
+          description: "O uso de CPU está acima de 80%"
+
+      # Alertas de métricas de negócio
+      - alert: LowPaymentVolume
+        expr: rate(wipay_payments_authorizations_total[1h]) < 1
+        for: 2h
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Volume de pagamentos baixo"
+          description: "O volume de pagamentos está abaixo do esperado"
+
+      - alert: HighRefundRate
+        expr: rate(wipay_payments_refunds_total[1h]) / rate(wipay_payments_authorizations_total[1h]) > 0.1
+        for: 1h
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Taxa de reembolso alta"
+          description: "A taxa de reembolso está acima de 10%"
+
+      # Alertas de segurança
+      - alert: TooManyFailedRequests
+        expr: rate(http_requests_total{status=~"4..|5.."}[5m]) > 100
+        for: 2m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Muitas requisições falharam"
+          description: "Há muitas requisições com erro 4xx ou 5xx"
+
+      - alert: AuthenticationFailures
+        expr: rate(http_requests_total{status="401"}[5m]) > 50
+        for: 5m
+        labels:
+          severity: warning
+          service: wipay-gateway
+        annotations:
+          summary: "Muitas falhas de autenticação"
+          description: "Há muitas requisições com erro 401 (não autorizado)"

@@ -74,7 +74,7 @@ public class PaymentController {
     @ApiResponse(responseCode = "404", description = "Transação não encontrada")
     @ApiResponse(responseCode = "401", description = "Não autorizado")
     public ResponseEntity<PaymentResponse> getPayment(@PathVariable UUID id) {
-        // TODO: Implementar consulta de pagamento
-        return ResponseEntity.notFound().build();
+        PaymentResponse payment = paymentService.getPayment(id);
+        return ResponseEntity.ok(payment);
     }
 } 
