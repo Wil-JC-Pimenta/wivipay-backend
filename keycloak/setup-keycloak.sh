@@ -3,7 +3,7 @@
 # Script para configurar o Keycloak com as novas roles e permissões
 # Execute este script após o Keycloak estar rodando
 
-echo "🚀 Configurando Keycloak para WiPay Gateway..."
+echo "🚀 Configurando Keycloak para WiviPay Gateway..."
 
 # Variáveis de configuração
 KEYCLOAK_URL="http://localhost:8180"
@@ -42,8 +42,8 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms" \
     -d "{
         \"realm\": \"$REALM\",
         \"enabled\": true,
-        \"displayName\": \"WiPay Gateway\",
-        \"displayNameHtml\": \"<div class=\\\"kc-logo-text\\\"><span>WiPay Gateway</span></div>\"
+        \"displayName\": \"WiviPay Gateway\",
+        \"displayNameHtml\": \"<div class=\\\"kc-logo-text\\\"><span>WiviPay Gateway</span></div>\"
     }" > /dev/null
 
 if [ $? -eq 0 ]; then
@@ -141,7 +141,7 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms/$REALM/users" \
         \"emailVerified\": true,
         \"firstName\": \"Admin\",
         \"lastName\": \"User\",
-        \"email\": \"admin@wipay.com\",
+        \"email\": \"admin@wivipay.com\",
         \"credentials\": [
             {
                 \"type\": \"password\",
@@ -209,7 +209,7 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms/$REALM/users" \
         \"emailVerified\": true,
         \"firstName\": \"Regular\",
         \"lastName\": \"User\",
-        \"email\": \"user@wipay.com\",
+        \"email\": \"user@wivipay.com\",
         \"credentials\": [
             {
                 \"type\": \"password\",

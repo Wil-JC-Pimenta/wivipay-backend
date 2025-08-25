@@ -12,8 +12,8 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  # WiPay Gateway Application
-  - job_name: 'wipay-gateway'
+  # WiviPay Gateway Application
+- job_name: 'wivipay-gateway'
     metrics_path: '/api/actuator/prometheus'
     static_configs:
       - targets: ['localhost:8082']
@@ -30,7 +30,7 @@ scrape_configs:
       
       - source_labels: [__address__]
         target_label: service
-        replacement: 'wipay-gateway'
+        replacement: 'wivipay-gateway'
       
       - source_labels: [__address__]
         target_label: environment
@@ -55,9 +55,9 @@ scrape_configs:
     metrics_path: '/metrics'
     scrape_interval: 60s
 
-# Alerting rules para WiPay
+# Alerting rules para WiviPay
 rule_files:
-  - 'wipay-alerts.yml'
+  - 'wivipay-alerts.yml'
 
 # Alertmanager configuration
 alerting:
@@ -68,26 +68,26 @@ alerting:
 
 # Recording rules para métricas customizadas
 recording_rules:
-  - record: wipay:payments:success_rate
-    expr: rate(wipay_payments_authorizations_total[5m]) / (rate(wipay_payments_authorizations_total[5m]) + rate(wipay_payments_failures_total[5m]))
+  - record: wivipay:payments:success_rate
+    expr: rate(wivipay_payments_authorizations_total[5m]) / (rate(wivipay_payments_authorizations_total[5m]) + rate(wivipay_payments_failures_total[5m]))
   
-  - record: wipay:customers:growth_rate
-    expr: rate(wipay_customers_creations_total[1h])
+  - record: wivipay:customers:growth_rate
+    expr: rate(wivipay_customers_creations_total[1h])
   
-  - record: wipay:credit_cards:active_count
-    expr: wipay_credit_cards_total
+  - record: wivipay:credit_cards:active_count
+    expr: wivipay_credit_cards_total
   
-  - record: wipay:transactions:volume_total
-    expr: sum(wipay_payments_amount_total)
+  - record: wivipay:transactions:volume_total
+    expr: sum(wivipay_payments_amount_total)
   
-  - record: wipay:errors:error_rate
-    expr: rate(wipay_errors_total[5m])
+  - record: wivipay:errors:error_rate
+    expr: rate(wivipay_errors_total[5m])
   
-  - record: wipay:response_time:p95
-    expr: histogram_quantile(0.95, rate(wipay_payments_processing_time_seconds_bucket[5m]))
+  - record: wivipay:response_time:p95
+    expr: histogram_quantile(0.95, rate(wivipay_payments_processing_time_seconds_bucket[5m]))
   
-  - record: wipay:response_time:p99
-    expr: histogram_quantile(0.99, rate(wipay_payments_processing_time_seconds_bucket[5m]))
+  - record: wivipay:response_time:p99
+    expr: histogram_quantile(0.99, rate(wivipay_payments_processing_time_seconds_bucket[5m]))
 
 # Configuração de storage
 storage:
@@ -102,19 +102,19 @@ wal:
   retention.period: 24h
 
 # Configuração de exemplos de métricas
-# Estas são as métricas que esperamos ver do WiPay Gateway:
-# - wipay_payments_authorizations_total
-# - wipay_payments_captures_total
-# - wipay_payments_refunds_total
-# - wipay_payments_failures_total
-# - wipay_payments_processing_time_seconds
-# - wipay_customers_creations_total
-# - wipay_customers_updates_total
-# - wipay_customers_deletions_total
-# - wipay_customers_operation_time_seconds
-# - wipay_credit_cards_creations_total
-# - wipay_credit_cards_updates_total
-# - wipay_credit_cards_deletions_total
-# - wipay_credit_cards_operation_time_seconds
-# - wipay_transaction_logs_created_total
-# - wipay_errors_total
+# Estas são as métricas que esperamos ver do WiviPay Gateway:
+# - wivipay_payments_authorizations_total
+# - wivipay_payments_captures_total
+# - wivipay_payments_refunds_total
+# - wivipay_payments_failures_total
+# - wivipay_payments_processing_time_seconds
+# - wivipay_customers_creations_total
+# - wivipay_customers_updates_total
+# - wivipay_customers_deletions_total
+# - wivipay_customers_operation_time_seconds
+# - wivipay_credit_cards_creations_total
+# - wivipay_credit_cards_updates_total
+# - wivipay_credit_cards_deletions_total
+# - wivipay_credit_cards_operation_time_seconds
+# - wivipay_transaction_logs_created_total
+# - wivipay_errors_total

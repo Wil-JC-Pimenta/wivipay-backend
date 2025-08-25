@@ -78,5 +78,5 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   show-actuator: true
-  packages-to-scan: com.wipay.gateway.controller
+  packages-to-scan: com.wivipay.gateway.controller
   paths-to-match: /**

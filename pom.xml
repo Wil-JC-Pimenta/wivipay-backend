@@ -11,8 +11,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.wipay</groupId>
-    <artifactId>gateway-springboot-pdv</artifactId>
+    <groupId>com.wivipay</groupId>
+    <artifactId>gateway-wivipay</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gateway-springboot-pdv</name>
     <description>Gateway de Pagamentos PDV</description>

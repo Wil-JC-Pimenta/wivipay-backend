@@ -1,16 +1,16 @@
 groups:
-  - name: wipay-gateway
+  - name: wivipay-gateway
     rules:
       # Alertas de disponibilidade
-      - alert: WiPayGatewayDown
-        expr: up{job="wipay-gateway"} == 0
+      - alert: WiviPayGatewayDown
+        expr: up{job="wivipay-gateway"} == 0
         for: 1m
         labels:
           severity: critical
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
-          summary: "WiPay Gateway está fora do ar"
-          description: "O serviço WiPay Gateway não está respondendo há mais de 1 minuto"
+          summary: "WiviPay Gateway está fora do ar"
+          description: "O serviço WiviPay Gateway não está respondendo há mais de 1 minuto"
 
       # Alertas de performance
       - alert: HighResponseTime
@@ -18,7 +18,7 @@ groups:
         for: 5m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Tempo de resposta alto detectado"
           description: "O tempo de resposta P95 está acima de 2 segundos"
@@ -28,7 +28,7 @@ groups:
         for: 2m
         labels:
           severity: critical
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Tempo de resposta muito alto"
           description: "O tempo de resposta P95 está acima de 5 segundos"
@@ -39,7 +39,7 @@ groups:
         for: 5m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Taxa de erro alta detectada"
           description: "A taxa de erro está acima de 10% nos últimos 5 minutos"
@@ -49,7 +49,7 @@ groups:
         for: 2m
         labels:
           severity: critical
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Taxa de erro crítica"
           description: "A taxa de erro está acima de 30% nos últimos 2 minutos"
@@ -60,7 +60,7 @@ groups:
         for: 5m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Taxa de falha de pagamento alta"
           description: "A taxa de falha de pagamentos está acima de 5%"
@@ -70,7 +70,7 @@ groups:
         for: 15m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Nenhum pagamento processado"
           description: "Não houve pagamentos processados nos últimos 10 minutos"
@@ -81,7 +81,7 @@ groups:
         for: 10m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Falha na criação de clientes"
           description: "Não há criação de clientes, mas há atualizações"
@@ -92,7 +92,7 @@ groups:
         for: 10m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Falha na criação de cartões"
           description: "Não há criação de cartões, mas há atualizações"
@@ -103,7 +103,7 @@ groups:
         for: 10m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Nenhum log de transação criado"
           description: "Não há logs de transação sendo criados"
@@ -178,7 +178,7 @@ groups:
         for: 2h
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Volume de pagamentos baixo"
           description: "O volume de pagamentos está abaixo do esperado"
@@ -188,7 +188,7 @@ groups:
         for: 1h
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Taxa de reembolso alta"
           description: "A taxa de reembolso está acima de 10%"
@@ -199,7 +199,7 @@ groups:
         for: 2m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Muitas requisições falharam"
           description: "Há muitas requisições com erro 4xx ou 5xx"
@@ -209,7 +209,7 @@ groups:
         for: 5m
         labels:
           severity: warning
-          service: wipay-gateway
+          service: wivipay-gateway
         annotations:
           summary: "Muitas falhas de autenticação"
           description: "Há muitas requisições com erro 401 (não autorizado)"

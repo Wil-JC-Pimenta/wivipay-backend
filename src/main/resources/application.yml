@@ -2,7 +2,7 @@ spring:
   application:
     name: gateway-pdv
   datasource:
-    url: jdbc:postgresql://localhost:5432/${DB_NAME:wipay}
+    url: jdbc:postgresql://localhost:5432/${DB_NAME:wivipay}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
@@ -87,5 +87,5 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   show-actuator: true
-  packages-to-scan: com.wipay.gateway.controller
+  packages-to-scan: com.wivipay.gateway.controller
   paths-to-match: /**

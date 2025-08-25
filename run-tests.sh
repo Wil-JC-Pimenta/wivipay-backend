@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Script para executar todos os testes do projeto WiPay Gateway
+# Script para executar todos os testes do projeto WiviPay Gateway
 # Execute este script na raiz do projeto
 
-echo "🧪 Executando Testes do WiPay Gateway..."
+echo "🧪 Executando Testes do WiviPay Gateway..."
 echo "=========================================="
 
 # Verificar se o Maven está instalado

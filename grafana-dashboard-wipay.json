@@ -1,8 +1,8 @@
 {
   "dashboard": {
     "id": null,
-    "title": "WiPay Gateway Dashboard",
-    "tags": ["wipay", "gateway", "payments", "monitoring"],
+    "title": "WiviPay Gateway Dashboard",
+            "tags": ["wivipay", "gateway", "payments", "monitoring"],
     "style": "dark",
     "timezone": "browser",
     "panels": [
@@ -12,8 +12,8 @@
         "type": "stat",
         "targets": [
           {
-            "expr": "up{job=\"wipay-gateway\"}",
-            "legendFormat": "WiPay Gateway"
+            "expr": "up{job=\"wivipay-gateway\"}",
+            "legendFormat": "WiviPay Gateway"
           },
           {
             "expr": "up{job=\"postgres\"}",
