@@ -1,8 +1,7 @@
 # 🚀 WiviPay Gateway - Sistema de Pagamentos
 
 **Última atualização**: 24 de Agosto de 2025  
-**Versão**: 1.0.0  
-**Status**: ✅ **PROJETO FUNCIONANDO PERFEITAMENTE COM POSTGRESQL**
+
 
 ---
 
@@ -477,4 +476,5 @@ O WiviPay Gateway está agora pronto para processar pagamentos em produção com
 
 *Última atualização: 24 de Agosto de 2025*  
 *Status: ✅ FUNCIONAL, TESTADO E EXECUTANDO PERFEITAMENTE*
+
 
