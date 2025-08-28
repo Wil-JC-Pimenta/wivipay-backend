@@ -447,8 +447,7 @@ chore: tarefas de manutenção
 ## 📞 **Suporte**
 
 - **Equipe**: WiviPay Team
-- **Email**: contato@wivipay.com
-- **Website**: https://wivipay.com
+- **Email**: wiljcpimenta@gmail.com
 - **Documentação**: Disponível em `/api/swagger-ui.html`
 - **Issues**: [GitHub Issues](https://github.com/wivipay/wivipay-backend/issues)
 
@@ -462,7 +461,6 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 
 ## 🎯 **Status Final**
 
-**✅ PROJETO COMPLETAMENTE FUNCIONAL E EXECUTANDO!**
 
 O WiviPay Gateway está agora pronto para processar pagamentos em produção com:
 - Todas as funcionalidades solicitadas implementadas
@@ -479,3 +477,4 @@ O WiviPay Gateway está agora pronto para processar pagamentos em produção com
 
 *Última atualização: 24 de Agosto de 2025*  
 *Status: ✅ FUNCIONAL, TESTADO E EXECUTANDO PERFEITAMENTE*
+
